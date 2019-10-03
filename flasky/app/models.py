@@ -37,11 +37,11 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
     
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(current_app.onfig['SECRET_KEY'], expiration)
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id}).decode('utf-8')
     
     def confirm(self, token):
-        s = Serializer(current_app.onfig['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token.encode('utf-8'))
         except:

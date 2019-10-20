@@ -82,7 +82,7 @@ class User(UserMixin, db.Model):
             if self.email == current_app.config['FLASKY_ADMIN']:
                 self.role = Role.query.filter_by(name='Administrator').first()
             if self.role is None:
-                self.rule = Role.query.filter_by(default=True).first()
+                self.role = Role.query.filter_by(default=True).first()
     
     @property
     def password(self):

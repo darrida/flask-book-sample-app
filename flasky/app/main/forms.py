@@ -6,6 +6,11 @@ from wtforms import ValidationError
 from ..models import Role, User
 
 
+class PostForm(FlaskForm):
+    body = TextAreaField("What's on your mind?", validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
     submit = SubmitField('Submit')

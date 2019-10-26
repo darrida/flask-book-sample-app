@@ -12,6 +12,11 @@ class PostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+class CommentForm(FlaskForm):
+    body = StringField('', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
     submit = SubmitField('Submit')

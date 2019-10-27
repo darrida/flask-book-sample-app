@@ -6,12 +6,12 @@ from .errors import forbidden
 from .decorators import permission_required
 
 
-@api.route('/posts/')
+@api.route('/posts/', methods=['GET'])
 def get_posts():
     page = request.args.get('page', 1, type=int)
     pagination = Post.query.paginate(
             page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
-            errot_out=False)
+            error_out=False)
     posts = pagination.items
     prev = None
     if pagination.has_prev:
@@ -34,12 +34,13 @@ def get_post(id):
 @api.route('/posts/', methods=['POST'])
 @permission_required(Permission.WRITE)
 def new_post():
+    print(request.json)
     post = Post.from_json(request.json)
     post.author = g.current_user
     db.session.add(post)
     db.session.commit()
     return jsonify(post.to_json()), 201, {'Location': url_for('api.get_post',
-                  id=post.d)}
+                  id=post.id)}
     
 @api.route('/posts/<int:id>', methods=['PUT'])
 @permission_required(Permission.WRITE)

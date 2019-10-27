@@ -3,16 +3,16 @@ from . import api
 from ..models import User, Post
 
 
-@api.route('/users/<int:id>')
+@api.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
     user = User.query.get_or_404(id)
-    return jsonify(user.to_json)
+    return jsonify(user.to_json())
 
 
-@api.route('/users/<int:id>/posts/')
+@api.route('/users/<int:id>/posts/', methods=['GET'])
 def get_user_posts(id):
     user = User.query.get_or_404(id)
-    page = request.args.get('page', 1, type-int)
+    page = request.args.get('page', 1, type=int)
     pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
             page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
             error_out=False)
@@ -31,7 +31,7 @@ def get_user_posts(id):
     })
     
 
-@api.route('/users/<int:id>/timeline/')
+@api.route('/users/<int:id>/timeline/', methods=['GET'])
 def get_user_followed_posts(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)

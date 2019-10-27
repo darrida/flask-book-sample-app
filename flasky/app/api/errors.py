@@ -1,4 +1,4 @@
-from flask import jsonify, request, render_template
+from flask import jsonify
 from app.exceptions import ValidationError
 #from app import main
 from . import api

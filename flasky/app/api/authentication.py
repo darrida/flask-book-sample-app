@@ -35,10 +35,10 @@ def auth_error():
     return unauthorized('Invalid credentials')
 
 
-@api.route('/posts/')
-@auth.login_required
-def get_posts():
-    pass
+#@api.route('/posts/')
+#@auth.login_required
+#def get_posts():
+#    pass
 
 
 @api.before_request

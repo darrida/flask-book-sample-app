@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, current_app, \
-                  flash, request, make_response
+                  flash, request, make_response, abort
 from flask_login import login_required, current_user
 from . import main
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
@@ -33,6 +33,7 @@ def index():
     posts = pagination.items
     return render_template('index.html', form=form, posts=posts,
                            show_followed=show_followed, pagination=pagination)
+
 
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
@@ -97,6 +98,7 @@ def moderate_disable(id):
 #    post = Post.query.get_or_404(id)
 #    return render_template('post.html', posts=[post])
 
+
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit(id):
@@ -134,11 +136,13 @@ def edit(id):
     #                       name=session.get('name'),
     #                       known=session.get('known', False))
     
+    
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = user.posts.order_by(Post.timestamp.desc()).all()
     return render_template('user.html', user=user, posts=posts)
+
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
@@ -156,6 +160,7 @@ def edit_profile():
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form)
+
 
 @main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -187,6 +192,7 @@ def edit_profile_admin(id):
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
 
+
 @main.route('/follow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
@@ -202,6 +208,7 @@ def follow(username):
     db.session.commit()
     flash('You are now following %s.' % username)
     return redirect(url_for('.user', username=username))
+
 
 @main.route('/unfollow/<username>')
 @login_required
@@ -219,6 +226,7 @@ def unfollow(username):
     flash('You are not following %s anymore.' % username)
     return redirect(url_for('.user', username=username))
 
+
 @main.route('/followers/<username>')
 def followers(username):
     user = User.query.filter_by(username=username).first()
@@ -234,6 +242,7 @@ def followers(username):
     return render_template('followers.html', user=user, title="Followers of",
                            endpoint='.followers', pagination=pagination,
                            follows=follows)
+
 
 @main.route('/followed_by/<username>')
 def followed_by(username):
@@ -251,12 +260,14 @@ def followed_by(username):
                            endpoint='.followed_by', pagination=pagination,
                            follows=follows)
 
+
 @main.route('/all')
 @login_required
 def show_all():
     resp = make_response(redirect(url_for('.index')))
     resp.set_cookie('show_followed', '', max_age=30*24*60*60)  # 30 days
     return resp
+
 
 @main.route('/followed')
 @login_required

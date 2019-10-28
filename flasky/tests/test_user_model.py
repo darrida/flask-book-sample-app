@@ -160,7 +160,7 @@ class UserModelTestCase(unittest.TestCase):
     def test_gravatar(self):
         u = User(email='john@example.com', password='cat')
         with self.app.test_request_context('/'):
-            gravatar = u.gravatar()
+            gravatar = u.gravatar(size=256, rating='pg', default='retro')
             gravatar_256 = u.gravatar(size=256)
             gravatar_pg = u.gravatar(rating='pg')
             gravatar_retro = u.gravatar(default='retro')

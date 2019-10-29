@@ -26,7 +26,7 @@ def login():
 @auth.route('/logout')
 def logout():
     logout_user()
-    flash('You have een logged out.')
+    flash('You have been logged out.')
     return redirect(url_for('main.index'))
 
 @auth.route('/register', methods=['GET', 'POST'])

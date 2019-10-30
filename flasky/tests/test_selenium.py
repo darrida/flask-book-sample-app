@@ -14,7 +14,8 @@ class SeleciumTestCase(unittest.TestCase):
         #start Chrome
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
-        options.binary_location = "C:\no_install_apps\development\chromedriver"
+        options.add_argument('--ignore-certificate-errors')
+        options.binary_location = 'C:\no_install_apps\development\chromedriver'
         try:
             cls.client = webdriver.Chrome(chrome_options=options)
         except:
@@ -39,7 +40,7 @@ class SeleciumTestCase(unittest.TestCase):
             fake.posts(10)
             
             # add an administrator suer
-            admin_role = Role.query.filter_by(permissions=0xff).first()
+            admin_role = Role.query.filter_by(name='Administrator').first()
             admin = User(email='john@example.com',
                          username='john', password='cat',
                          role=admin_role, confirmed=True)
@@ -47,11 +48,12 @@ class SeleciumTestCase(unittest.TestCase):
             db.session.commit()
             
             # start the Flask server in a thread
-            cls.server_thread = threading.Thread(
-                    target=cls.app.run, kwargs={'debug': 'false',
-                                                'use_reloader': False,
-                                                'use_debugger': False})
+            cls.server_thread = threading.Thread(target=cls.app.run, 
+                                                 kwargs={'debug': False})
             cls.server_thread.start()
+            
+            # give the server a second to ensure it is up
+            time.sleep(2)
             
     @classmethod
     def tearDownClass(cls):
@@ -77,7 +79,7 @@ class SeleciumTestCase(unittest.TestCase):
     
     def test_admin_home_page(self):
         # navigate to home page
-        self.client.get('http://localhost:5000/')
+        self.client.get('http://localhost:5000')
         self.assertTrue(re.search('Hello,\s+Stranger!',
                                   self.client.page_source))
         

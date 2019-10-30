@@ -6,54 +6,53 @@ import unittest
 from app import create_app, db, fake
 from app.models import Role, User, Post
 
+
 class SeleciumTestCase(unittest.TestCase):
     client = None
     
     @classmethod
     def setUpClass(cls):
-        #start Chrome
+        # start Chrome
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
-        options.add_argument('--ignore-certificate-errors')
-        options.binary_location = 'C:\no_install_apps\development\chromedriver'
         try:
             cls.client = webdriver.Chrome(chrome_options=options)
         except:
             pass
-        
+
         # skip these tests if the browser could not be started
         if cls.client:
             # create the application
             cls.app = create_app('testing')
             cls.app_context = cls.app.app_context()
             cls.app_context.push()
-            
+
             # suppress logging to keep unittest output clean
             import logging
             logger = logging.getLogger('werkzeug')
-            logger.setLevel('ERROR')
-            
+            logger.setLevel("ERROR")
+
             # create the database and populate with some fake data
             db.create_all()
             Role.insert_roles()
             fake.users(10)
             fake.posts(10)
-            
-            # add an administrator suer
+
+            # add an administrator user
             admin_role = Role.query.filter_by(name='Administrator').first()
             admin = User(email='john@example.com',
                          username='john', password='cat',
                          role=admin_role, confirmed=True)
             db.session.add(admin)
             db.session.commit()
-            
+
             # start the Flask server in a thread
-            cls.server_thread = threading.Thread(target=cls.app.run, 
+            cls.server_thread = threading.Thread(target=cls.app.run,
                                                  kwargs={'debug': False})
             cls.server_thread.start()
-            
+
             # give the server a second to ensure it is up
-            time.sleep(2)
+            time.sleep(1) 
             
     @classmethod
     def tearDownClass(cls):

@@ -14,11 +14,13 @@ class SeleciumTestCase(unittest.TestCase):
     def setUpClass(cls):
         # start Chrome
         options = webdriver.ChromeOptions()
-        #options.add_argument('headless')
-        #try:
-        cls.client = webdriver.Chrome(r'C:\Users\benha\Documents\Development\chromedriver\chromedriver.exe', chrome_options=options)
-        #except:
-        #    pass
+        options.add_argument('headless')
+        try:
+            cls.client = webdriver.Chrome(r'C:\Users\benha\Documents\Development\chromedriver\chromedriver.exe', chrome_options=options)
+        except:
+            cls.client = webdriver.Chrome(r'C:\local-work\GitHub\flask-book-sample-app\flasky\utilities\chromedriver78\chromedriver.exe', chrome_options=options)
+        finally:
+            pass
 
         # skip these tests if the browser could not be started
         if cls.client:

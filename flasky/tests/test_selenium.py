@@ -14,11 +14,11 @@ class SeleciumTestCase(unittest.TestCase):
     def setUpClass(cls):
         # start Chrome
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        try:
-            cls.client = webdriver.Chrome(chrome_options=options)
-        except:
-            pass
+        #options.add_argument('headless')
+        #try:
+        cls.client = webdriver.Chrome(r'C:\Users\benha\Documents\Development\chromedriver\chromedriver.exe', chrome_options=options)
+        #except:
+        #    pass
 
         # skip these tests if the browser could not be started
         if cls.client:
@@ -71,14 +71,17 @@ class SeleciumTestCase(unittest.TestCase):
             
     def setUp(self):
         if not self.client:
-            self.skipTest('Web browser not available')
+           self.skipTest('Web browser not available')
+        #pass
     
     def tearDown(self):
         pass
     
     def test_admin_home_page(self):
         # navigate to home page
-        self.client.get('http://localhost:5000')
+        self.client.get('http://localhost:5000/')
+        #print(self.client.page_source)
+        time.sleep(3) 
         self.assertTrue(re.search('Hello,\s+Stranger!',
                                   self.client.page_source))
         
@@ -87,9 +90,11 @@ class SeleciumTestCase(unittest.TestCase):
         self.assertIn('<h1>Login</h1>', self.client.page_source)
         
         # log in
+        time.sleep(3)
         self.client.find_element_by_name('email').send_keys('john@example.com')
         self.client.find_element_by_name('password').send_keys('cat')
         self.client.find_element_by_name('submit').click()
+        time.sleep(3)
         self.assertTrue(re.search('Hello,\s+john!', self.client.page_source))
         
         # navigate to the user's profile page

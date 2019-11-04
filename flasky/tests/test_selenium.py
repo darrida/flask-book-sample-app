@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import threading
 import time
 import re
@@ -13,8 +14,15 @@ class SeleciumTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # start Chrome
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
+        options = Options()
+        #options = webdriver.ChromeOptions()
+        options.headless = True
+        #options.log.level = "trace"
+        options.add_argument('--headless')
+        options.add_argument('--no-proxy-server')
+        options.add_argument("--proxy-server='direct://'")
+        options.add_argument("--proxy-bypass-list=*")
+        #options.set_windows_size(1440, 900)
         try:
             cls.client = webdriver.Chrome(r'C:\Users\benha\Documents\Development\chromedriver\chromedriver.exe', chrome_options=options)
         except:

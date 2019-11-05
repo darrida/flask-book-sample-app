@@ -82,7 +82,7 @@ class SeleciumTestCase(unittest.TestCase):
     def setUp(self):
         if not self.client:
            self.skipTest('Web browser not available')
-        #pass
+        pass
     
     def tearDown(self):
         pass

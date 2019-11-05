@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, current_app, \
                   flash, request, make_response, abort
 from flask_login import login_required, current_user
+from flask_sqlalchemy import get_debug_queries
 from . import main
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from .. import db

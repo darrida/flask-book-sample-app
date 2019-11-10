@@ -26,6 +26,7 @@ Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.1
 Flask-SSLify==0.1.5
 Flask-WTF==0.14.2
+gunicorn==20.0.0
 httpie==1.0.3
 idna==2.8
 ipython==7.9.0
@@ -38,9 +39,12 @@ Markdown==3.1.1
 MarkupSafe==1.1.1
 packaging==19.2
 parso==0.5.1
+pexpect==4.7.0
 pickleshare==0.7.5
 pip-upgrader==1.4.15
+pkg-resources==0.0.0
 prompt-toolkit==2.0.10
+ptyprocess==0.6.0
 Pygments==2.4.2
 pyparsing==2.4.2
 python-dateutil==2.8.0
